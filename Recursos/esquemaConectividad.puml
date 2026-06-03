@@ -1,0 +1,46 @@
+@startuml
+skinparam linetype ortho
+skinparam DefaultFontName "Ubuntu"
+skinparam roundcorner 15
+skinparam nodesep 60
+skinparam ranksep 60
+skinparam node {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
+}
+skinparam cloud {
+    BackgroundColor LightGray
+    BorderColor Black
+}
+
+
+cloud "Red K (Internet)\nGateway: 172.17.0.1/16" as RedK
+
+
+node "Router A\n==\neth0: 170.16.255.252/17\neth1: 192.168.50.129/30\neth2: 192.168.50.142/30" as RA
+node "Router B\n==\neth0: 200.3.124.60/26\neth1: 192.168.50.130/30\neth2: 192.168.50.134/30\neth3: 192.168.50.145/30" as RB
+node "Router C\n==\neth0: 11.11.15.252/20\neth1: 192.168.50.141/30\neth2: 192.168.50.137/30\neth3: 192.168.50.149/30" as RC
+node "Router D\n==\neth0: 129.30.192.124/26\neth1: 192.168.50.150/30\neth2: 192.168.50.146/30" as RD
+node "Router E\n==\neth0: 192.168.50.138/30\neth1: 192.168.50.133/30\neth2: 172.17.0.1/16" as RE
+
+
+node "Host A\nIP: 170.16.128.1/17\nGW: 170.16.255.252" as HA
+node "Host B\nIP: 200.3.124.1/26\nGW: 200.3.124.60" as HB
+node "Host C\nIP: 11.11.0.1/20\nGW: 11.11.15.252" as HC
+node "Host D\nIP: 129.30.192.65/26\nGW: 129.30.192.124" as HD
+
+RA -- HA : "Red A"
+RB -- HB : "Red B"
+RC -- HC : "Red C"
+RD -- HD : "Red D"
+
+RA -- RB : "Red F\nRA(.129) <--> RB(.130)"
+RB -- RE : "Red G\nRB(.134) <--> RE(.133)"
+RC -- RE : "Red H\nRC(.137) <--> RE(.138)"
+RA -- RC : "Red I\nRA(.142) <--> RC(.141)"
+RB -- RD : "Red J\nRB(.145) <--> RD(.146)"
+RC -- RD : "Red L\nRC(.149) <--> RD(.150)"
+
+RE -up- RedK : "eth2"
+
+@enduml
